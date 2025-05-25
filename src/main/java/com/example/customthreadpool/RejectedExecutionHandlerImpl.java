@@ -17,9 +17,6 @@ public class RejectedExecutionHandlerImpl implements RejectedExecutionHandler {
         // 3. Сброс самой старой задачи из очереди и добавление новой
         // 4. Реализация backpressure (например, с использованием Reactive Streams)
 
-        // Выбор стратегии зависит от требований вашего приложения.  Простое отклонение может привести к потере данных,
-        // выполнение в текущем потоке замедлит обработку текущего запроса, а сброс задач может быть неприемлем, если важна
-        // обработка всех задач. Backpressure – наиболее сложный вариант, но и самый гибкий.
     }
 
     public void rejectedExecution(Runnable r, CustomThreadPool executor) {

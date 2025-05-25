@@ -10,7 +10,6 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws InterruptedException {
-        // Настройка логирования (пример)
         LOGGER.setLevel(Level.INFO);
 
         int corePoolSize = 2;
@@ -21,10 +20,9 @@ public class Main {
         int minSpareThreads = 1;
 
         ThreadFactoryImpl threadFactory = new ThreadFactoryImpl("MyPool");
-        // БОЛЬШЕ НЕ НУЖЕН: RejectedExecutionHandlerImpl rejectedExecutionHandler = new RejectedExecutionHandlerImpl();
 
         CustomThreadPool threadPool = new CustomThreadPool(corePoolSize, maxPoolSize, keepAliveTime, timeUnit,
-                queueSize, minSpareThreads, threadFactory/*, rejectedExecutionHandler*/);
+                queueSize, minSpareThreads, threadFactory);
 
         // Отправка задач
         for (int i = 0; i < 20; i++) {
@@ -32,7 +30,7 @@ public class Main {
             threadPool.execute(() -> {
                 try {
                     LOGGER.info("[Task] Task " + taskId + " started by " + Thread.currentThread().getName());
-                    Thread.sleep(new Random().nextInt(3000)); // Имитация работы
+                    Thread.sleep(new Random().nextInt(3000));
                     LOGGER.info("[Task] Task " + taskId + " finished by " + Thread.currentThread().getName());
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -41,7 +39,7 @@ public class Main {
             });
         }
 
-        Thread.sleep(15000); // Даем время задачам выполниться
+        Thread.sleep(15000);
 
         threadPool.shutdown();
 
