@@ -66,17 +66,13 @@ public class CustomThreadPool implements CustomExecutor {
         }
 
         if (isShutdown) {
-            // ЛОГИКА ОТКЛОНЕНИЯ ЗДЕСЬ:
             LOGGER.severe("[Rejected] Task " + command.toString() + " was rejected due to shutdown!");
-            // Опционально: throw new RejectedExecutionException("Задача отклонена из-за остановки");
             return;
         }
 
         try {
             if (!taskQueue.offer(command, 100, TimeUnit.MILLISECONDS)) { // Добавлено ожидание
-                // ЛОГИКА ОТКЛОНЕНИЯ ЗДЕСЬ:
                 LOGGER.severe("[Rejected] Task " + command.toString() + " was rejected due to queue overload!");
-                // Опционально: command.run(); // Выполнить в текущем потоке (НЕ рекомендуется для высокой нагрузки)
                 ensureMinimumSpareThreads(); // Проверяем после отклонения
             } else {
                 LOGGER.info("[Pool] Task accepted into queue: " + command.toString());
@@ -113,7 +109,6 @@ public class CustomThreadPool implements CustomExecutor {
                 if (task != null) {
                     return task;
                 } else {
-                    // Idle timeout
                     synchronized (workers) {
                         if (workerCount.get() > corePoolSize) {
                             workerCount.decrementAndGet();
